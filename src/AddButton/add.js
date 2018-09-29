@@ -17,7 +17,7 @@ export default class Add extends React.Component {
           className="btn-flat waves-effect waves-light red"
           onClick={this.onAddBtnClick}
         >
-          <i className="material-icons addButton">Add Moment</i>
+          <i className="material-icons addButton">{this.props.text}</i>
         </a>
       </div>
     );

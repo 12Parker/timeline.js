@@ -7,6 +7,9 @@ export const Modal = ({ handleClose, show, children }) => {
       <div class="row">
         <div class="col s12 m6">
           <div class="card blue-grey darken-1">
+            <button className="cancelBtn right" onClick={handleClose}>
+              X
+            </button>
             <div class="card-content white-text">
               <span class="card-title">Card Title</span>
               {children}
@@ -16,9 +19,7 @@ export const Modal = ({ handleClose, show, children }) => {
                 use effectively.
               </p>
             </div>
-            <div class="card-action">
-              <button onClick={handleClose}>Close</button>
-            </div>
+            <div class="card-action" />
           </div>
         </div>
       </div>

@@ -1,8 +1,13 @@
 
 .display-block {
-    display: block;
+    display: flex;
   }
   
   .display-none {
     display: none;
+  }
+  .cancelBtn {
+    background-color: gray;
+    border: none;
+    color: white;
   }

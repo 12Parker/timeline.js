@@ -13,9 +13,12 @@ export class Moment extends React.Component {
   };
   render() {
     return (
-      <div className="momentContainer">
+      <div className="">
         <Modal show={this.state.show} handleClose={this.hideModal} />
-        <a className="btn-floating btn-small  red" onClick={this.showModal}>
+        <a
+          className="moment btn-floating btn-small  red"
+          onClick={this.showModal}
+        >
           <i className="material-icons" />
         </a>
       </div>

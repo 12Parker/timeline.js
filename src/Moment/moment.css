@@ -1,7 +1,10 @@
-.dot {
-    height: 25px;
-    width: 25px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-  }
+.momentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.moment {
+  margin: 3%;
+  display: flex;
+  justify-content: space-between;
+}
