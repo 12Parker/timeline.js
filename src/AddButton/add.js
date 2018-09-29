@@ -1,26 +1,25 @@
-import React from 'react';
-import Moment from "../Moment/moment.js";
+import React from "react";
+import material from "materialize-css";
+import "./add.css";
 
-export default class Form extends React.Component {
-	constructor(props) {
-        super(props);
-        this.state = {momentList: []};
-        this.onAddBtnClick = this.onAddBtnClick.bind(this);
-    }
-
-    onAddBtnClick(event) {
-        const momentList = this.state.momentList;
-        this.setState({
-            momentList: momentList.concat(<Moment key={momentList.length} />)
-        });
-    }
-
-    render() {
-        return (
-            <div>
-                <button onClick={this.onAddBtnClick}>Add input</button>
-                {this.state.momentList}
-            </div>
-        );
-    }
+export default class Add extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onAddBtnClick = this.onAddBtnClick.bind(this);
+  }
+  onAddBtnClick(event) {
+    this.props.addItem();
+  }
+  render() {
+    return (
+      <div>
+        <a
+          className="btn-flat waves-effect waves-light red"
+          onClick={this.onAddBtnClick}
+        >
+          <i className="material-icons addButton">Add Moment</i>
+        </a>
+      </div>
+    );
+  }
 }
