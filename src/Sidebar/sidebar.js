@@ -5,11 +5,21 @@ import Add from "../AddButton/add.js";
 import smile from "../Images/smile.png";
 import "./sidebar.css";
 export default class Sidebar extends React.Component {
+  state = { selectedFile: null };
+
+  fileChangedHandler = event => {
+    this.setState({ selectedFile: event.target.files[0] });
+  };
+
+  uploadHandler = () => {
+    console.log(this.state.selectedFile);
+  };
   render() {
     return (
       <div className="sidebar">
-        <Gallery imageUrls={[smile]} />
-        <Add addItem={this.addItem} text="Add Image" />
+        <Gallery imageUrls={[smile, smile]} />
+        <input type="file" onChange={this.fileChangedHandler} />
+        <button onClick={this.uploadHandler}>Upload!</button>
       </div>
     );
   }

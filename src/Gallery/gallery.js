@@ -7,8 +7,8 @@ export default class Gallery extends React.Component {
 
   render() {
     return (
-      <div className="gallery">
-        <div className="imageContainer">
+      <div className="row gallery">
+        <div className=" col imageContainer">
           {this.props.imageUrls.map(imageUrl => this.renderImage(imageUrl))}
         </div>
       </div>

@@ -12,17 +12,24 @@ export class Moment extends React.Component {
     this.setState({ show: false });
   };
   render() {
-    return (
-      <div className="">
-        <Modal show={this.state.show} handleClose={this.hideModal} />
-        <a
-          className="moment btn-floating btn-small  red"
-          onClick={this.showModal}
-        >
-          <i className="material-icons" />
-        </a>
-      </div>
-    );
+    if (this.state.show) {
+      return (
+        <div className="row">
+          <Modal show={this.state.show} handleClose={this.hideModal} />
+        </div>
+      );
+    } else {
+      return (
+        <div className="row">
+          <a
+            className="moment btn-floating btn-small  red"
+            onClick={this.showModal}
+          >
+            <i className="material-icons" />
+          </a>
+        </div>
+      );
+    }
   }
 }
 
