@@ -1,6 +1,5 @@
 import React from "react";
 import Gallery from "../Gallery/gallery";
-import Add from "../AddButton/add.js";
 
 import smile from "../Images/smile.png";
 import "./sidebar.css";
@@ -16,7 +15,7 @@ export default class Sidebar extends React.Component {
   };
   render() {
     return (
-      <div className="sidebar">
+      <div className="col s12 m4 l3 sidebar">
         <Gallery imageUrls={[smile, smile]} />
         <input type="file" onChange={this.fileChangedHandler} />
         <button onClick={this.uploadHandler}>Upload!</button>

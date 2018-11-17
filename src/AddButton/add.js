@@ -1,5 +1,4 @@
 import React from "react";
-import material from "materialize-css";
 import "./add.css";
 
 export default class Add extends React.Component {

@@ -8,6 +8,7 @@ export default class Timeline extends React.Component {
   constructor(props) {
     super(props);
     this.addItem = this.addItem.bind(this);
+    this.removeItem = this.removeItem.bind(this);
     this.state = { items: items };
   }
   addItem() {
@@ -15,12 +16,17 @@ export default class Timeline extends React.Component {
       index: items.length + 1
     });
     this.setState({ items: items });
+    console.log("Items: ", items);
+  }
+  removeItem(itemIndex) {
+    items.splice(itemIndex, 1);
+    this.setState({ items: items });
   }
   render() {
     return (
-      <div className="timeline">
-        <MomentList items={items} />
-        <Add addItem={this.addItem} text="Add Me" />
+      <div className="col s12 m8 l9 timeline">
+        <MomentList items={items} removeItem={this.removeItem} />
+        <Add addItem={this.addItem} text="Add Moment" />
       </div>
     );
   }

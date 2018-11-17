@@ -1,5 +1,4 @@
 import React from "react";
-import material from "materialize-css";
 
 export default class MomentComment extends React.Component {
   state = {
