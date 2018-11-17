@@ -2,7 +2,7 @@ import React from "react";
 import "./imageModal.css";
 import MomentComment from "../MomentComment/momentComment";
 export const Modal = ({ handleClose, show, children }) => {
-  let showHideClassName = show ? "row display-block" : "display-none";
+  let showHideClassName = show ? "display-block" : "display-none";
   return (
     <div
       style={{ wordBreak: "break-word", maxWidth: "300px" }}

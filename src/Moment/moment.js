@@ -24,7 +24,7 @@ export class Moment extends React.Component {
   render() {
     if (this.state.show) {
       return (
-        <div className="row">
+        <div className="display-block">
           <Modal show={this.state.show} handleClose={this.hideModal} />
         </div>
       );

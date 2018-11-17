@@ -1,13 +1,13 @@
-
 .display-block {
-    display: flex;
-  }
-  
-  .display-none {
-    display: none;
-  }
-  .cancelBtn {
-    background-color: gray;
-    border: none;
-    color: white;
-  }
+  display: flex;
+  justify-content: center;
+}
+
+.display-none {
+  display: none;
+}
+.cancelBtn {
+  background-color: gray;
+  border: none;
+  color: white;
+}
