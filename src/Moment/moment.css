@@ -11,3 +11,15 @@
   display: flex;
   justify-content: space-between;
 }
+
+.moment:hover {
+  background: darken(#eee, 5%);
+}
+
+.placeholder {
+  background: rgb(255, 240, 120);
+}
+.placeholder::before {
+  content: "Drop here";
+  color: rgb(225, 210, 90);
+}

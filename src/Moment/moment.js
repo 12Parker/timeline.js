@@ -2,8 +2,22 @@ import React from "react";
 import { Modal } from "../ImageModal/imageModal";
 import "./moment.css";
 import { Delete } from "@material-ui/icons";
+import { ItemTypes } from "../Constants/constants";
+import { DragSource } from "react-dnd";
 
-export class Moment extends React.Component {
+const momentSource = {
+  beginDrag(props) {
+    console.log("begin dragging moment", props);
+    return {};
+  }
+};
+
+const collect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+});
+
+class Moment extends React.Component {
   state = { show: false };
   constructor(props) {
     super(props);
@@ -21,7 +35,9 @@ export class Moment extends React.Component {
     let index = parseInt(this.props.index);
     this.props.removeItem(index);
   }
+
   render() {
+    const { isDragging, connectDragSource } = this.props;
     if (this.state.show) {
       return (
         <div className="display-block">
@@ -29,8 +45,15 @@ export class Moment extends React.Component {
         </div>
       );
     } else {
-      return (
-        <div>
+      return connectDragSource(
+        <div
+          style={{
+            opacity: isDragging ? 0.5 : 1,
+            fontSize: 25,
+            fontWeight: "bold",
+            cursor: "move"
+          }}
+        >
           <a
             className="moment btn-floating btn-small  red"
             onClick={this.showModal}
@@ -46,20 +69,4 @@ export class Moment extends React.Component {
   }
 }
 
-export class MomentList extends React.Component {
-  render() {
-    let items = this.props.items.map((item, index) => {
-      return (
-        <div className="row">
-          <Moment
-            key={index}
-            item={item}
-            index={index}
-            removeItem={this.props.removeItem}
-          />
-        </div>
-      );
-    });
-    return <ul className="momentContainer">{items}</ul>;
-  }
-}
+export default DragSource("moment", momentSource, collect)(Moment);

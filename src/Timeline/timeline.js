@@ -1,7 +1,10 @@
 import React from "react";
-import { MomentList, Moment } from "../Moment/moment.js";
+import Moment from "../Moment/moment.js";
+import MomentList from "../MomentList/momentList.js";
 import Add from "../AddButton/add.js";
+
 import "./timeline.css";
+
 let items = [<Moment />];
 
 export default class Timeline extends React.Component {
@@ -16,7 +19,6 @@ export default class Timeline extends React.Component {
       index: items.length + 1
     });
     this.setState({ items: items });
-    console.log("Items: ", items);
   }
   removeItem(itemIndex) {
     items.splice(itemIndex, 1);
