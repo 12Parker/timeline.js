@@ -1,21 +1,38 @@
 import React from "react";
 import { Moment } from "../Moment/moment.js";
-
+import { Draggable } from "react-beautiful-dnd";
 export class MomentList extends React.Component {
   render() {
-    let items = this.props.items.map((id, item, index) => {
+    const { provided, innerRef, children } = this.props;
+    const rand = Math.random();
+    let items = this.props.items.map((item, index) => {
       return (
         <div className="row">
-          <Moment
-            key={id}
-            item={item}
-            index={index}
-            ref={this.props.ref}
-            removeItem={this.props.removeItem}
-          />
+          <Draggable draggableId={`moment${index}`} index={index}>
+            {provided => (
+              <Moment
+                key={index}
+                item={item}
+                index={index}
+                provided={provided}
+                innerRef={provided.innerRef}
+                removeItem={this.props.removeItem}
+              />
+            )}
+          </Draggable>
+          {children}
         </div>
       );
     });
-    return <ul className="momentContainer">{items}</ul>;
+    return (
+      <ul
+        {...provided.droppableProps}
+        ref={innerRef}
+        children={children}
+        className="momentContainer"
+      >
+        {items}
+      </ul>
+    );
   }
 }

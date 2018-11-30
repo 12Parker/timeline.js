@@ -22,9 +22,7 @@ export const Modal = ({ handleClose, show, children }) => {
           </div>
           <div className="card-content white-text">
             {children}
-            <MomentComment
-              momentComment={{ comment: "Please add a comment." }}
-            />
+            <MomentComment placeholder={{ comment: "Please add a comment." }} />
           </div>
         </div>
       </div>
