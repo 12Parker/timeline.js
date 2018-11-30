@@ -2,22 +2,9 @@ import React from "react";
 import { Modal } from "../ImageModal/imageModal";
 import "./moment.css";
 import { Delete } from "@material-ui/icons";
-import { ItemTypes } from "../Constants/constants";
-import { DragSource } from "react-dnd";
+import { Draggable } from "react-beautiful-dnd";
 
-const momentSource = {
-  beginDrag(props) {
-    console.log("begin dragging moment", props);
-    return {};
-  }
-};
-
-const collect = (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
-});
-
-class Moment extends React.Component {
+export class Moment extends React.Component {
   state = { show: false };
   constructor(props) {
     super(props);
@@ -37,7 +24,6 @@ class Moment extends React.Component {
   }
 
   render() {
-    const { isDragging, connectDragSource } = this.props;
     if (this.state.show) {
       return (
         <div className="display-block">
@@ -45,28 +31,36 @@ class Moment extends React.Component {
         </div>
       );
     } else {
-      return connectDragSource(
-        <div
-          style={{
-            opacity: isDragging ? 0.5 : 1,
-            fontSize: 25,
-            fontWeight: "bold",
-            cursor: "move"
-          }}
+      return (
+        <Draggable
+          key={this.props.id}
+          draggableId={this.props.id}
+          index={this.props.index}
         >
-          <a
-            className="moment btn-floating btn-small  red"
-            onClick={this.showModal}
-          >
-            <i className="material-icons" />
-          </a>
-          <a onClick={this.onClickClose}>
-            <Delete />
-          </a>
-        </div>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={{
+                fontSize: 25,
+                fontWeight: "bold",
+                cursor: "move"
+              }}
+            >
+              <a
+                className="moment btn-floating btn-small  red"
+                onClick={this.showModal}
+              >
+                <i className="material-icons" />
+              </a>
+              <a onClick={this.onClickClose}>
+                <Delete />
+              </a>
+            </div>
+          )}
+        </Draggable>
       );
     }
   }
 }
-
-export default DragSource("moment", momentSource, collect)(Moment);

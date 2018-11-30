@@ -1,27 +1,16 @@
 import React from "react";
-import Moment from "../Moment/moment.js";
-import { DropTarget } from "react-dnd";
+import { Moment } from "../Moment/moment.js";
 
-const momentTarget = {
-  drop(props, monitor) {
-    return {};
-  }
-};
-const collect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver()
-});
-
-class MomentList extends React.Component {
+export class MomentList extends React.Component {
   render() {
-    const { connectDropTarget } = this.props;
     let items = this.props.items.map((id, item, index) => {
-      return connectDropTarget(
+      return (
         <div className="row">
           <Moment
             key={id}
             item={item}
             index={index}
+            ref={this.props.ref}
             removeItem={this.props.removeItem}
           />
         </div>
@@ -30,5 +19,3 @@ class MomentList extends React.Component {
     return <ul className="momentContainer">{items}</ul>;
   }
 }
-
-export default DropTarget("moment", momentTarget, collect)(MomentList);
