@@ -1,7 +1,16 @@
 import React from "react";
 import "./imageModal.css";
 import MomentComment from "../MomentComment/momentComment";
-export const Modal = ({ handleClose, show, children }) => {
+export const Modal = ({
+  counter,
+  updateMoment,
+  index,
+  title,
+  handleClose,
+  show,
+  children
+}) => {
+  console.log("Updating modal");
   let showHideClassName = show ? "display-block" : "display-none";
   return (
     <div
@@ -16,13 +25,19 @@ export const Modal = ({ handleClose, show, children }) => {
             </button>
             <img
               style={{ width: "100%", height: "200px" }}
-              src={require("../Images/smile.png")}
+              src={require("../DefaultImages/smile.png")}
             />
-            <span className="card-title">Card Title</span>
+            <span className="card-title">{title}</span>
           </div>
           <div className="card-content white-text">
             {children}
-            <MomentComment placeholder={{ comment: "Please add a comment." }} />
+            <MomentComment
+              key={index}
+              counter={counter}
+              updateMoment={updateMoment}
+              index={index}
+              placeholder={{ comment: "Please add a comment." }}
+            />
           </div>
         </div>
       </div>

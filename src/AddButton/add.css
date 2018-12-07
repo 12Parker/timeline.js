@@ -1,4 +1,11 @@
+.addForm {
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
 .addButton {
-    display: inline-block;
-    color: white;
-  }
+  color: white;
+  background-color: red;
+}

@@ -6,51 +6,51 @@ import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
 import { Draggable } from "react-beautiful-dnd";
 import "./timeline.css";
-let items = [<Moment />];
+let items = [];
 
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  console.log("result0: ", startIndex, " : ", endIndex);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
 export default class Timeline extends React.Component {
   constructor(props) {
     super(props);
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
-    this.state = { items: items };
+    this.state = { items: items, counter: 0 };
   }
 
-  reorder = (list, startIndex, endIndex) => {
-    console.log("list: ", list);
-    console.log("start: ", startIndex);
-    console.log("end: ", endIndex);
-    const result = list;
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
   onDragEnd(result) {
     // dropped outside the list
-    console.log("dragEnd");
     if (!result.destination) {
-      console.log("dragEnd Failed");
+      console.log("dragendfail");
       return;
     }
-
-    const dropItem = this.reorder(
-      items,
+    console.log("result: ", result);
+    console.log("resultSOurce: ", result.destination);
+    const item = reorder(
+      this.state.items,
       result.source.index,
       result.destination.index
     );
-    console.log("dropItem: ", dropItem);
+
     this.setState({
-      items: dropItem
+      items: item
     });
   }
 
-  addItem() {
-    items.unshift({
-      index: items.length + 1
+  addItem(title) {
+    items.push({
+      id: title,
+      title: title
     });
-    this.setState({ items });
+    this.setState(state => {
+      return { items, counter: state.counter + 1 };
+    });
   }
 
   removeItem(itemIndex) {
@@ -61,17 +61,19 @@ export default class Timeline extends React.Component {
   render() {
     return (
       <div className="col s12 m8 l9 timeline">
-        <DragDropContext onDragEnd={() => {}}>
+        <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
             {provided => (
               <List provided={provided} innerRef={provided.innerRef}>
                 {this.state.items.map((item, index) => (
-                  <Draggable key={index} draggableId={`${index}`} index={0}>
+                  <Draggable key={item.id} draggableId={item.id} index={index}>
                     {provided => (
                       <Moment
-                        key={index}
+                        key={item.title}
+                        title={item.title}
                         item={item}
                         index={index}
+                        counter={this.state.counter}
                         provided={provided}
                         innerRef={provided.innerRef}
                         removeItem={this.removeItem}

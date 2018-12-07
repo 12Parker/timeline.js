@@ -4,21 +4,35 @@ import "./add.css";
 export default class Add extends React.Component {
   constructor(props) {
     super(props);
-    this.onAddBtnClick = this.onAddBtnClick.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = { placeholder: "Add moment" };
   }
-  onAddBtnClick(event) {
-    this.props.addItem();
+  componentDidMount() {
+    this.refs.itemName.focus();
+  }
+  onSubmit(event) {
+    event.preventDefault();
+    let newItemValue = this.refs.itemName.value;
+    console.log("NewVal: ", newItemValue);
+    if (newItemValue) {
+      this.props.addItem(newItemValue);
+      this.refs.form.reset();
+    }
   }
   render() {
     return (
-      <div>
-        <a
-          className="btn-flat waves-effect waves-light red"
-          onClick={this.onAddBtnClick}
-        >
-          <i className="material-icons addButton">{this.props.text}</i>
-        </a>
-      </div>
+      <form ref="form" className="addForm" onSubmit={this.onSubmit}>
+        <input
+          placeholder={this.state.placeholder}
+          ref="itemName"
+          id="addMoment"
+          type="text"
+          className="row"
+        />
+        <button type="submit" className="addButton">
+          Add
+        </button>
+      </form>
     );
   }
 }

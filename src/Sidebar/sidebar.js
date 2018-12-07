@@ -1,7 +1,7 @@
 import React from "react";
 import Gallery from "../Gallery/gallery";
 
-import smile from "../Images/smile.png";
+import smile from "../DefaultImages/smile.png";
 import "./sidebar.css";
 export default class Sidebar extends React.Component {
   state = { selectedFile: null };

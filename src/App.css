@@ -1,12 +1,23 @@
-.body {
+body {
+  min-height: 100vh;
+}
+html {
   height: 100vh;
+}
+#root {
+  min-height: 100vh;
 }
 .App {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-color: lightslategray;
-  height: 100vh;
+  min-height: 100vh;
+  margin-bottom: 0px;
+}
+
+.row {
+  margin-bottom: 0px !important;
 }
 
 .App-logo {
