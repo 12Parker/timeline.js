@@ -25,7 +25,7 @@ export const Modal = ({
             </button>
             <img
               style={{ width: "100%", height: "200px" }}
-              src={require("../DefaultImages/smile.png")}
+              src={require("../DefaultImages/wallpapersden.com_space-moon-and-earth-minimalism-art_3840x2160.jpg")}
             />
             <span className="card-title">{title}</span>
           </div>

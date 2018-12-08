@@ -8,3 +8,14 @@
   background-color: lightskyblue;
   text-align: center;
 }
+.imageContainer {
+  width: 100%;
+  margin-bottom: 1px;
+  border-bottom: 1px solid lightcoral;
+}
+.galleryImage {
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  width: 50px;
+}
