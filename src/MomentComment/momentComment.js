@@ -7,7 +7,7 @@ export default class MomentComment extends React.Component {
     this.state = {
       edit: true,
       placeholder: this.props.placeholder.comment, // Populate props values
-      [`momentComment${this.props.counter}`]: ""
+      [`momentComment${this.props.title}`]: ""
     };
     console.log("construct: ", this.props.counter);
   }
@@ -38,17 +38,22 @@ export default class MomentComment extends React.Component {
   }
   updateInputValue(e) {
     this.setState({
-      [`momentComment${this.props.counter}`]: e.target.value
+      [`momentComment${this.props.title}`]: e.target.value
     });
-    // update localStorage
-    localStorage.setItem(
-      `momentComment${this.props.counter}`,
-      JSON.stringify(e.target.value)
-    );
-    this.props.updateMoment(this.state[`momentComment${this.props.counter}`]);
+    // // update localStorage
+    // localStorage.setItem(
+    //   `momentComment${this.props.title}`,
+    //   JSON.stringify(e.target.value)
+    // );
+    // this.props.updateMoment(this.state[`momentComment${this.props.title}`]);
   }
   saveChange = () => {
-    console.log("This: ", this);
+    // update localStorage
+    localStorage.setItem(
+      `momentComment${this.props.title}`,
+      JSON.stringify(this.state[`momentComment${this.props.title}`])
+    );
+    this.props.updateMoment(this.state[`momentComment${this.props.title}`]);
     this.setState(state => ({
       edit: !state.edit
     }));
@@ -67,7 +72,7 @@ export default class MomentComment extends React.Component {
             type="text"
             className="row"
             onChange={e => this.updateInputValue(e)}
-            value={this.state[`momentComment${this.props.counter}`]}
+            value={this.state[`momentComment${this.props.title}`]}
           />
           <div>
             <a

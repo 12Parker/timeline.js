@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal } from "../ImageModal/imageModal";
 import "./moment.css";
+import axios from "axios";
 import { Delete } from "@material-ui/icons";
 export class Moment extends React.Component {
   constructor(props) {
@@ -9,6 +10,18 @@ export class Moment extends React.Component {
     this.state = { show: true, counter: this.props.counter };
     console.log("Constructing moment");
   }
+  componentDidMount() {
+    console.log("Uploading Moment");
+    const items = {
+      id: this.props.title,
+      title: this.props.title,
+      counter: this.props.counter
+    };
+    axios.post("api/uploadMoment", items).then(res => {
+      console.log(res.statusText);
+    });
+  }
+
   // shouldComponentUpdate(nextProps, nextState) {
   //   if (nextProps === this.props) {
   //     return false;
@@ -44,6 +57,13 @@ export class Moment extends React.Component {
     console.log("data: ", data);
     if (data) {
       this.setState({ comment: data });
+      const updateMoment = {
+        id: this.props.title,
+        comment: data
+      };
+      axios.post("api/updateData", updateMoment).then(res => {
+        console.log(res.statusText);
+      });
     }
   };
 

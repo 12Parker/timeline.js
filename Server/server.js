@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const Data = require("./data");
+const Moment = require("./moments");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const API_PORT = 3001;
@@ -47,11 +48,33 @@ router.get("/getData", (req, res) => {
 // this is our update method
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
-  const { id, update } = req.body;
-  Data.findOneAndUpdate(id, update, err => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
-  });
+  const { id, comment } = req.body;
+  const query = {
+    title: id
+  };
+  const update = {
+    comment: comment
+  };
+  console.log("Update: ", query, " : ", update);
+  Moment.findOneAndUpdate(
+    query,
+    update,
+    { upsert: true, new: true, runValidators: true }, // options
+    function(err, doc) {
+      // callback
+      if (err) {
+        // handle error
+      } else {
+        console.log("Doc: ", doc);
+        // handle document
+      }
+    },
+    err => {
+      if (err) return res.json({ success: false, error: err });
+      console.log("success");
+      return res.json({ success: true });
+    }
+  );
 });
 
 // this is our delete method
@@ -80,39 +103,54 @@ router.post("/putData", (req, res) => {
   }
   data.message = message;
   data.id = id;
+  //TODO: Not saving multiple files yet
   data.save(err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
 });
 
-router.post("/upload", (req, res, next) => {
+router.post("/upload", (req, res) => {
   let data = new Data();
   let uploadFile = req.files.file;
   console.log("Post: ", uploadFile);
-  data.id = 0;
-  data.message = uploadFile.data.toString("base64");
-  if ((!data.id && data.id !== 0) || !data.message) {
+
+  uploadFile.forEach((element, index) => {
+    console.log("Element: ", element);
+    data.id = index;
+    data.message = element.data.toString("base64");
+
+    if ((!data.id && data.id !== 0) || !data.message) {
+      return res.json({
+        success: false,
+        error: "INVALID INPUTS"
+      });
+    }
+  });
+  data.save(err => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+router.post("/uploadMoment", (req, res) => {
+  let momentsToUpload = new Moment();
+  let momentReq = req.body;
+
+  if (!momentReq.id || !momentReq) {
     return res.json({
       success: false,
       error: "INVALID INPUTS"
     });
   }
-  data.save(err => {
+
+  momentsToUpload.counter = momentReq.counter;
+  momentsToUpload.title = momentReq.title;
+  momentsToUpload.comment = "";
+  console.log("MomentReq: ", momentsToUpload);
+  momentsToUpload.save(err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
-
-  // const fileName = req.files.file.name;
-  // uploadFile.mv(`${__dirname}/public/files/${fileName}`, function(err) {
-  //   if (err) {
-  //     return res.status(500).send(err);
-  //   }
-
-  //   res.json({
-  //     file: `public/${req.files.file.name}`
-  //   });
-  // });
 });
 
 // append /api for our http requests

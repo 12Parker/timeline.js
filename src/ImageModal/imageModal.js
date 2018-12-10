@@ -33,6 +33,7 @@ export const Modal = ({
             {children}
             <MomentComment
               key={index}
+              title={title}
               counter={counter}
               updateMoment={updateMoment}
               index={index}

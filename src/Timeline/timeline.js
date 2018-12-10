@@ -1,6 +1,7 @@
 import React from "react";
 import { Moment } from "../Moment/moment.js";
 import { MomentList } from "../MomentList/momentList.js";
+import axios from "axios";
 import Add from "../AddButton/add.js";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -24,6 +25,25 @@ export default class Timeline extends React.Component {
     this.state = { items: items, counter: 0 };
   }
 
+  // componentDidMount() {
+  //   this.getDataFromDb();
+  // }
+
+  // getDataFromDb = () => {
+  //   fetch("/api/getData")
+  //     .then(data => data.json())
+  //     .then(res => this.setState({ pictures: res.data }));
+  // };
+
+  // handleselectedFile = event => {
+  //   const eventArray = Array.from(event.target.files);
+  //   console.log("EventArray: ", eventArray);
+  //   this.setState({
+  //     selectedFile: eventArray,
+  //     loaded: 0
+  //   });
+  // };
+
   onDragEnd(result) {
     // dropped outside the list
     if (!result.destination) {
@@ -46,7 +66,8 @@ export default class Timeline extends React.Component {
   addItem(title) {
     items.push({
       id: title,
-      title: title
+      title: title,
+      counter: this.state.counter + 1
     });
     this.setState(state => {
       return { items, counter: state.counter + 1 };

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import "./sidebar.css";
+import { element } from "prop-types";
 
 export default class Sidebar extends React.Component {
   constructor(props) {
@@ -13,10 +14,10 @@ export default class Sidebar extends React.Component {
   // changed and implement those changes into our UI
   componentDidMount() {
     this.getDataFromDb();
-    if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
-      this.setState({ intervalIsSet: interval });
-    }
+    // if (!this.state.intervalIsSet) {
+    //   let interval = setInterval(this.getDataFromDb, 1000);
+    //   this.setState({ intervalIsSet: interval });
+    // }
   }
 
   // never let a process live forever
@@ -38,6 +39,7 @@ export default class Sidebar extends React.Component {
   // our put method that uses our backend api
   // to create new query into our data base
   putDataToDB = (picture, e) => {
+    //currently not used, delete later maybe
     const files = Array.from(picture.target.files);
     const formData = new FormData();
     files.forEach((file, i) => {
@@ -66,11 +68,16 @@ export default class Sidebar extends React.Component {
   handleUpload = () => {
     console.log("State: ", this.state);
     const data = new FormData();
-    data.append(
-      "file",
-      this.state.selectedFile[0],
-      this.state.selectedFile[0].name
-    );
+    console.log("InitData: ", data);
+    this.state.selectedFile.forEach((element, index) => {
+      data.append(
+        "file",
+        this.state.selectedFile[index],
+        this.state.selectedFile[index].name
+      );
+    });
+    console.log("Data: ", data);
+
     // let currentIds = this.state.pictures.map(pictures => pictures.id);
     // let idToBeAdded = 0;
     // while (currentIds.includes(idToBeAdded)) {
