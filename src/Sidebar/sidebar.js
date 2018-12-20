@@ -14,10 +14,10 @@ export default class Sidebar extends React.Component {
   // changed and implement those changes into our UI
   componentDidMount() {
     this.getDataFromDb();
-    // if (!this.state.intervalIsSet) {
-    //   let interval = setInterval(this.getDataFromDb, 1000);
-    //   this.setState({ intervalIsSet: interval });
-    // }
+    if (!this.state.intervalIsSet) {
+      let interval = setInterval(this.getDataFromDb, 1000);
+      this.setState({ intervalIsSet: interval });
+    }
   }
 
   // never let a process live forever
@@ -76,7 +76,7 @@ export default class Sidebar extends React.Component {
         this.state.selectedFile[index].name
       );
     });
-    console.log("Data: ", data);
+    console.log("Data: ", data.files);
 
     // let currentIds = this.state.pictures.map(pictures => pictures.id);
     // let idToBeAdded = 0;
@@ -95,6 +95,10 @@ export default class Sidebar extends React.Component {
         console.log(res.statusText);
       });
   };
+  onDragStart = (ev, id) => {
+    console.log("dragstart:");
+    ev.dataTransfer.setData("id", id);
+  };
 
   render() {
     const { pictures } = this.state;
@@ -103,8 +107,15 @@ export default class Sidebar extends React.Component {
         {pictures.length <= 0
           ? "NO DB ENTRIES YET"
           : pictures.map(dat => (
-              <div className="imageContainer">
+              <div
+                draggable
+                onDragStart={e => this.onDragStart(e, dat.message)}
+                // onDragOver={(e)=>this.onDragOver(e)}
+                // onDrop={(e)=>{this.onDrop(e)}}>
+                className="imageContainer"
+              >
                 <img
+                  onClick={this.onClick}
                   className="galleryImage"
                   src={"data:image/jpg;base64," + dat.message}
                 />

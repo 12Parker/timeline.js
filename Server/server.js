@@ -111,23 +111,43 @@ router.post("/putData", (req, res) => {
 });
 
 router.post("/upload", (req, res) => {
+  let error = null;
   let data = new Data();
+  let arrayData = [];
   let uploadFile = req.files.file;
   console.log("Post: ", uploadFile);
 
-  uploadFile.forEach((element, index) => {
-    console.log("Element: ", element);
-    data.id = index;
-    data.message = element.data.toString("base64");
-
+  if (uploadFile && uploadFile.constructor === Array) {
+    uploadFile.forEach((element, index) => {
+      console.log("Element: ", element.name);
+      data.id = index;
+      data.name = element.name;
+      data.message = element.data.toString("base64");
+      arrayData.push(data);
+      console.log("IDForEach: ", arrayData[index].name);
+      if ((!data.id && data.id !== 0) || !data.message) {
+        return res.json({
+          success: false,
+          error: "INVALID INPUTS"
+        });
+      }
+      data = {};
+    });
+  } else if (uploadFile) {
+    data.id = 0;
+    data.name = uploadFile.name;
+    data.message = uploadFile.data.toString("base64");
+    arrayData.push(data);
+    console.log("IDForEach: ", arrayData[0].name);
     if ((!data.id && data.id !== 0) || !data.message) {
       return res.json({
         success: false,
         error: "INVALID INPUTS"
       });
     }
-  });
-  data.save(err => {
+  }
+  Data.insertMany(arrayData, (err, saved) => {
+    // console.log("Saving: ", arrayData);
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
@@ -135,7 +155,7 @@ router.post("/upload", (req, res) => {
 router.post("/uploadMoment", (req, res) => {
   let momentsToUpload = new Moment();
   let momentReq = req.body;
-
+  console.log("Req: ", momentReq);
   if (!momentReq.id || !momentReq) {
     return res.json({
       success: false,
