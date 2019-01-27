@@ -38,7 +38,7 @@ app.use(fileUpload());
 // this is our get method
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
-  console.log("GetData");
+  // console.log("GetData");
   Data.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
@@ -52,10 +52,42 @@ router.post("/updateData", (req, res) => {
   const query = {
     title: id
   };
+  console.log("Query: ", query);
   const update = {
     comment: comment
   };
   console.log("Update: ", query, " : ", update);
+  Moment.findOneAndUpdate(
+    query,
+    update,
+    { upsert: true, new: true, runValidators: true }, // options
+    function(err, doc) {
+      // callback
+      if (err) {
+        // handle error
+      } else {
+        console.log("Doc: ", doc);
+        // handle document
+      }
+    },
+    err => {
+      if (err) return res.json({ success: false, error: err });
+      console.log("success");
+      return res.json({ success: true });
+    }
+  );
+});
+
+router.post("/updateImage", (req, res) => {
+  const { id, data } = req.body;
+  const query = {
+    title: id
+  };
+
+  const update = {
+    image: data
+  };
+  console.log("Update Image: ", query, " : ", update);
   Moment.findOneAndUpdate(
     query,
     update,
@@ -152,7 +184,31 @@ router.post("/upload", (req, res) => {
     return res.json({ success: true });
   });
 });
+
 router.post("/uploadMoment", (req, res) => {
+  let momentsToUpload = new Moment();
+  let momentReq = req.body;
+
+  console.log("Req: ", momentReq);
+  if (!momentReq.id || !momentReq) {
+    return res.json({
+      success: false,
+      error: "INVALID INPUTS"
+    });
+  }
+
+  momentsToUpload.counter = momentReq.counter;
+  momentsToUpload.title = momentReq.title;
+  momentsToUpload.comment = "";
+  momentsToUpload.image = "";
+  console.log("MomentReq: ", momentsToUpload);
+  momentsToUpload.save(err => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+
+router.post("/updateMoment", (req, res) => {
   let momentsToUpload = new Moment();
   let momentReq = req.body;
   console.log("Req: ", momentReq);

@@ -1,20 +1,61 @@
 import React from "react";
 import "./imageModal.css";
 import MomentComment from "../MomentComment/momentComment";
+import axios from "axios";
 
 export class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
-    this.state = { src: "" };
+    this.state = { src: "", [`momentImage${this.props.title}`]: "" };
+  }
+  componentDidMount() {
+    this.hydrateStateWithLocalStorage();
+  }
+  hydrateStateWithLocalStorage() {
+    // for all items in state
+    for (let key in this.state) {
+      // if the key exists in localStorage
+      if (localStorage.hasOwnProperty(key)) {
+        // get the key's value from localStorage
+        let value = localStorage.getItem(key);
+        console.log("val: ", value);
+        // parse the localStorage string and setState
+        try {
+          value = JSON.parse(value);
+          console.log("KeyVal: ", key, " : ", value);
+          this.setState({ [key]: value });
+          console.log("StateNow: ", this.state);
+        } catch (e) {
+          // handle empty string
+          console.log("StateNowFail: ", this.state);
+          this.setState({ [key]: value });
+        }
+      }
+    }
   }
   onDragOver = ev => {
     ev.preventDefault();
   };
   onDrop = (ev, cat) => {
     let id = ev.dataTransfer.getData("id");
-    this.setState({ src: "data:image/jpg;base64," + id });
+    this.setState({
+      [`momentImage${this.props.title}`]: "data:image/jpg;base64," + id
+    });
+    console.log("Uploading Image");
+    const items = {
+      id: this.props.title,
+      data: this.state[`momentImage${this.props.title}`]
+    };
+    localStorage.setItem(
+      `momentImage${this.props.title}`,
+      JSON.stringify("data:image/jpg;base64," + id)
+    );
+    axios.post("api/updateImage", items).then(res => {
+      console.log(res.statusText);
+    });
   };
+
   render() {
     let showHideClassName = this.props.show ? "display-block" : "display-none";
     return (
@@ -38,7 +79,7 @@ export class Modal extends React.Component {
                   this.onDrop(e);
                 }}
                 style={{ width: "100%", height: "200px" }}
-                src={this.state.src}
+                src={this.state[`momentImage${this.props.title}`]}
               />
               <span className="card-title">{this.props.title}</span>
             </div>
