@@ -121,16 +121,23 @@ export default class Sidebar extends React.Component {
                 />
               </div>
             ))}
-        <div>
-          <input
-            type="file"
-            multiple
-            name=""
-            id=""
-            onChange={this.handleselectedFile}
-          />
-          <button onClick={this.handleUpload}>Upload</button>
-          <div> {Math.round(this.state.loaded, 2)} %</div>
+        <div className="flex">
+          <div className="upload-btn-wrapper">
+            <button className="btn">Upload a file</button>
+            <input
+              className="button-secondary"
+              type="file"
+              multiple
+              name=""
+              id=""
+              onChange={this.handleselectedFile}
+            />
+          </div>
+          <div className="flex">
+            <button className="button-secondary" onClick={this.handleUpload}>
+              Upload
+            </button>
+          </div>
         </div>
       </div>
     );

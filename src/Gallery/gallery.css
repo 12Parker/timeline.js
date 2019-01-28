@@ -1,7 +1,7 @@
 .imageContainer {
   width: 100%;
   margin-bottom: 1px;
-  border-bottom: 1px solid lightcoral;
+  /* border-bottom: 1px solid lightcoral; */
 }
 .galleryImage {
   margin-left: auto;

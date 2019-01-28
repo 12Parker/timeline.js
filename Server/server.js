@@ -35,7 +35,6 @@ app.use(logger("dev"));
 app.use(cors());
 app.use(fileUpload());
 
-// this is our get method
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
   // console.log("GetData");
@@ -45,14 +44,12 @@ router.get("/getData", (req, res) => {
   });
 });
 
-// this is our update method
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
   const { id, comment } = req.body;
   const query = {
     title: id
   };
-  console.log("Query: ", query);
   const update = {
     comment: comment
   };
@@ -234,16 +231,3 @@ app.use("/api", router);
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
-
-// const formData = new FormData();
-// formData.append(
-//   "file",
-//   this.state.selectedFile,
-//   this.state.selectedFile.name
-// );
-// console.log("FormData: ", formData);
-// let uploadFile = formData.files.file;
-// let data = {};
-// data.message = uploadFile.data.toString("base64");
-// data.id = uploadFile.name;
-// console.log("Data: ", data);
