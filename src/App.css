@@ -11,7 +11,7 @@ html {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: lightslategray;
+  background-color: #181824;
   min-height: 100vh;
   margin-bottom: 0px;
 }
