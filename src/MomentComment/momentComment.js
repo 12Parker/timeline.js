@@ -9,46 +9,35 @@ export default class MomentComment extends React.Component {
       placeholder: this.props.placeholder.comment, // Populate props values
       [`momentComment${this.props.title}`]: ""
     };
-    console.log("construct: ", this.props.counter);
   }
+
   hydrateStateWithLocalStorage() {
-    // for all items in state
     for (let key in this.state) {
-      // if the key exists in localStorage
       if (localStorage.hasOwnProperty(key)) {
-        // get the key's value from localStorage
         let value = localStorage.getItem(key);
-        console.log("val: ", value);
         // parse the localStorage string and setState
         try {
           value = JSON.parse(value);
-          console.log("KeyVal: ", key, " : ", value);
           this.setState({ [key]: value });
-          console.log("StateNow: ", this.state);
         } catch (e) {
           // handle empty string
-          console.log("StateNowFail: ", this.state);
           this.setState({ [key]: value });
         }
       }
     }
   }
+
   componentDidMount() {
     this.hydrateStateWithLocalStorage();
   }
+
   updateInputValue(e) {
     this.setState({
       [`momentComment${this.props.title}`]: e.target.value
     });
-    // // update localStorage
-    // localStorage.setItem(
-    //   `momentComment${this.props.title}`,
-    //   JSON.stringify(e.target.value)
-    // );
-    // this.props.updateMoment(this.state[`momentComment${this.props.title}`]);
   }
+
   saveChange = () => {
-    // update localStorage
     localStorage.setItem(
       `momentComment${this.props.title}`,
       JSON.stringify(this.state[`momentComment${this.props.title}`])

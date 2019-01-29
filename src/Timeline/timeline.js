@@ -1,7 +1,5 @@
 import React from "react";
 import { Moment } from "../Moment/moment.js";
-import { MomentList } from "../MomentList/momentList.js";
-import axios from "axios";
 import Add from "../AddButton/add.js";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -11,11 +9,11 @@ let items = [];
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
-  console.log("result0: ", startIndex, " : ", endIndex);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
   return result;
 };
+
 export default class Timeline extends React.Component {
   constructor(props) {
     super(props);
@@ -25,33 +23,12 @@ export default class Timeline extends React.Component {
     this.state = { items: items, counter: 0 };
   }
 
-  // componentDidMount() {
-  //   this.getDataFromDb();
-  // }
-
-  // getDataFromDb = () => {
-  //   fetch("/api/getData")
-  //     .then(data => data.json())
-  //     .then(res => this.setState({ pictures: res.data }));
-  // };
-
-  // handleselectedFile = event => {
-  //   const eventArray = Array.from(event.target.files);
-  //   console.log("EventArray: ", eventArray);
-  //   this.setState({
-  //     selectedFile: eventArray,
-  //     loaded: 0
-  //   });
-  // };
-
   onDragEnd(result) {
     // dropped outside the list
     if (!result.destination) {
-      console.log("dragendfail");
       return;
     }
-    console.log("result: ", result);
-    console.log("resultSOurce: ", result.destination);
+
     const item = reorder(
       this.state.items,
       result.source.index,

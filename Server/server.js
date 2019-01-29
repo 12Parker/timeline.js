@@ -9,11 +9,9 @@ const fileUpload = require("express-fileupload");
 const API_PORT = 3001;
 const app = express();
 const router = express.Router();
-
+require("custom-env").env();
 // this is our MongoDB database
-const dbRoute =
-  "mongodb://Admin:Ttf7VHdaPHZvDxg@ds243798.mlab.com:43798/timelinejs";
-
+const dbRoute = process.env.REACT_APP_MONGO_ROUTE;
 // connects our back end code with the database
 mongoose.connect(
   dbRoute,
@@ -39,8 +37,8 @@ app.use(fileUpload());
 router.get("/getData", (req, res) => {
   // console.log("GetData");
   Data.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
+    if (err) return null; //res.json({ success: false, error: err });
+    return null; //res.json({ success: true, data: data });
   });
 });
 
@@ -112,29 +110,6 @@ router.delete("/deleteData", (req, res) => {
   const { id } = req.body;
   Data.findOneAndDelete(id, err => {
     if (err) return res.send(err);
-    return res.json({ success: true });
-  });
-});
-
-// this is our create methid
-// this method adds new data in our database
-router.post("/putData", (req, res) => {
-  let data = new Data();
-
-  const { id, message } = req.body;
-  console.log("PutData: ", message);
-
-  if ((!id && id !== 0) || !message) {
-    return res.json({
-      success: false,
-      error: "INVALID INPUTS"
-    });
-  }
-  data.message = message;
-  data.id = id;
-  //TODO: Not saving multiple files yet
-  data.save(err => {
-    if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });
   });
 });

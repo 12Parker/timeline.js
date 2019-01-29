@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import "./sidebar.css";
-import { element } from "prop-types";
 
 export default class Sidebar extends React.Component {
   constructor(props) {
@@ -36,39 +35,16 @@ export default class Sidebar extends React.Component {
       .then(res => this.setState({ pictures: res.data }));
   };
 
-  // our put method that uses our backend api
-  // to create new query into our data base
-  putDataToDB = (picture, e) => {
-    //currently not used, delete later maybe
-    const files = Array.from(picture.target.files);
-    const formData = new FormData();
-    files.forEach((file, i) => {
-      formData.append(i, file);
-    });
-    let currentIds = this.state.pictures.map(pictures => pictures.id);
-    let idToBeAdded = 0;
-    while (currentIds.includes(idToBeAdded)) {
-      ++idToBeAdded;
-    }
-    console.log("Data; ", idToBeAdded, ":", picture[0].name);
-    axios.post("/api/putData", {
-      id: idToBeAdded,
-      message: picture[0].name
-    });
-  };
-
   handleselectedFile = event => {
     const eventArray = Array.from(event.target.files);
-    console.log("EventArray: ", eventArray);
     this.setState({
       selectedFile: eventArray,
       loaded: 0
     });
   };
+
   handleUpload = () => {
-    console.log("State: ", this.state);
     const data = new FormData();
-    console.log("InitData: ", data);
     this.state.selectedFile.forEach((element, index) => {
       data.append(
         "file",
@@ -76,13 +52,7 @@ export default class Sidebar extends React.Component {
         this.state.selectedFile[index].name
       );
     });
-    console.log("Data: ", data.files);
 
-    // let currentIds = this.state.pictures.map(pictures => pictures.id);
-    // let idToBeAdded = 0;
-    // while (currentIds.includes(idToBeAdded)) {
-    //   ++idToBeAdded;
-    // }
     axios
       .post("api/upload", data, {
         onUploadProgress: ProgressEvent => {
@@ -95,8 +65,8 @@ export default class Sidebar extends React.Component {
         console.log(res.statusText);
       });
   };
+
   onDragStart = (ev, id) => {
-    console.log("dragstart:");
     ev.dataTransfer.setData("id", id);
   };
 
@@ -110,8 +80,6 @@ export default class Sidebar extends React.Component {
               <div
                 draggable
                 onDragStart={e => this.onDragStart(e, dat.message)}
-                // onDragOver={(e)=>this.onDragOver(e)}
-                // onDrop={(e)=>{this.onDrop(e)}}>
                 className="imageContainer"
               >
                 <img

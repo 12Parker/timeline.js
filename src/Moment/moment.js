@@ -8,10 +8,9 @@ export class Moment extends React.Component {
     super(props);
     this.onClickClose = this.onClickClose.bind(this);
     this.state = { show: true, counter: this.props.counter };
-    console.log("Constructing moment");
   }
+
   componentDidMount() {
-    console.log("Uploading Moment");
     const items = {
       id: this.props.title,
       title: this.props.title,
@@ -22,16 +21,10 @@ export class Moment extends React.Component {
     });
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps === this.props) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
   showModal = () => {
     this.setState({ show: true });
   };
+
   getRandomColor() {
     return (
       "rgb(" +
@@ -43,6 +36,7 @@ export class Moment extends React.Component {
       ")"
     );
   }
+
   hideModal = () => {
     console.log("ThisModal: ", this);
     this.setState({ show: false });
@@ -54,7 +48,6 @@ export class Moment extends React.Component {
   }
 
   momentData = data => {
-    console.log("data: ", data);
     if (data) {
       this.setState({ comment: data });
       const updateMoment = {
@@ -69,7 +62,6 @@ export class Moment extends React.Component {
 
   render() {
     const { provided, innerRef, index } = this.props;
-    console.log("Props: ", index);
     if (this.state.show) {
       return (
         <div

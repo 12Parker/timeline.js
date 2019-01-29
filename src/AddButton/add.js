@@ -7,9 +7,11 @@ export default class Add extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.state = { placeholder: "Add moment" };
   }
+
   componentDidMount() {
     this.refs.itemName.focus();
   }
+
   onSubmit(event) {
     event.preventDefault();
     let newItemValue = this.refs.itemName.value;
@@ -19,6 +21,7 @@ export default class Add extends React.Component {
       this.refs.form.reset();
     }
   }
+
   render() {
     return (
       <form ref="form" className="addForm" onSubmit={this.onSubmit}>
