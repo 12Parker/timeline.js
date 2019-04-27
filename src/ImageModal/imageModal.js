@@ -67,8 +67,16 @@ export class Modal extends React.Component {
       >
         <div className="col">
           <div className="card blue-grey darken-1">
-            <div className="card-image">
+            <div style={{ position: "relative" }} className="card-image">
               <button
+                style={{
+                  position: "absolute",
+                  opacity: "95",
+                  zIndex: 1,
+                  top: "0",
+                  right: "0",
+                  color: "white"
+                }}
                 className="cancelBtn right"
                 onClick={this.props.handleClose}
               >

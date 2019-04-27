@@ -65,10 +65,11 @@ export default class MomentComment extends React.Component {
           />
           <div>
             <a
-              className="btn-flat waves-effect waves-light red"
+              style={{ margin: "5px", color: "white" }}
+              className="btn-flat waves-effect waves-light blue"
               onClick={this.saveChange}
             >
-              <i className="material-icons">{buttonText}</i>
+              <i className="material-icons modalButton">{buttonText}</i>
             </a>
           </div>
         </form>
