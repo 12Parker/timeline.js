@@ -1,4 +1,5 @@
 import React from "react";
+import "./momentComment.css";
 
 export default class MomentComment extends React.Component {
   constructor(props) {
@@ -7,7 +8,10 @@ export default class MomentComment extends React.Component {
     this.state = {
       edit: true,
       placeholder: this.props.placeholder.comment, // Populate props values
-      [`momentComment${this.props.title}`]: ""
+      [`momentComment${this.props.title}`]: "",
+      rows: 5,
+      minRows: 5,
+      maxRows: 10
     };
   }
 
@@ -32,7 +36,25 @@ export default class MomentComment extends React.Component {
   }
 
   updateInputValue(e) {
+    const textareaLineHeight = 24;
+    const { minRows, maxRows } = this.state;
+
+    const previousRows = e.target.rows;
+    e.target.rows = minRows; // reset number of rows in textarea
+
+    const currentRows = ~~(e.target.scrollHeight / textareaLineHeight);
+
+    if (currentRows === previousRows) {
+      e.target.rows = currentRows;
+    }
+
+    if (currentRows >= maxRows) {
+      e.target.rows = maxRows;
+      e.target.scrollTop = e.target.scrollHeight;
+    }
+
     this.setState({
+      rows: currentRows < maxRows ? currentRows : maxRows,
       [`momentComment${this.props.title}`]: e.target.value
     });
   }
@@ -54,12 +76,13 @@ export default class MomentComment extends React.Component {
     return (
       <div className="row">
         <form className="col s12">
-          <input
+          <textarea
+            rows={this.state.rows}
             readOnly={editable}
             placeholder={this.state.placeholder}
             id="momentComment"
             type="text"
-            className="row"
+            className="row textarea"
             onChange={e => this.updateInputValue(e)}
             value={this.state[`momentComment${this.props.title}`]}
           />
