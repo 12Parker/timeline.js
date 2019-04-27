@@ -6,7 +6,7 @@ import "./sidebar.css";
 export default class Sidebar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { pictures: [], selectedFile: [], loaded: 0 };
+    this.state = { pictures: [], selectedFile: [], loaded: 0, uploadCount: 0 };
   }
 
   // when component mounts, first thing it does is fetch all existing data in our db
@@ -34,8 +34,10 @@ export default class Sidebar extends React.Component {
 
   handleselectedFile = event => {
     const eventArray = Array.from(event.target.files);
+    console.log("SelectedCount: ", eventArray.length);
     this.setState({
       selectedFile: eventArray,
+      uploadCount: eventArray.length,
       loaded: 0
     });
   };
@@ -93,6 +95,11 @@ export default class Sidebar extends React.Component {
 
   render() {
     const { pictures } = this.state;
+    let selectText =
+      this.state.uploadCount > 0
+        ? this.state.uploadCount + " File(s) Selected"
+        : "Select Files";
+
     return (
       <div className="col s12 m4 l3 sidebar">
         {pictures.length <= 0
@@ -115,7 +122,7 @@ export default class Sidebar extends React.Component {
             ))}
         <div className="flex">
           <div className="upload-btn-wrapper">
-            <button className="btn">Select Files</button>
+            <button className="btn">{selectText}</button>
             <input
               className="button-secondary"
               type="file"
