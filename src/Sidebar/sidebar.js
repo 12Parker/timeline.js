@@ -103,7 +103,7 @@ export default class Sidebar extends React.Component {
     return (
       <div className="col s12 m4 l3 sidebar">
         {pictures.length <= 0
-          ? "NO DB ENTRIES YET"
+          ? "No Photos Uploaded Yet"
           : pictures.map(dat => (
               <div
                 draggable
