@@ -108,17 +108,27 @@ export default class Sidebar extends React.Component {
           pictures.map(dat => (
             <div
               draggable
+              style={{ position: "relative" }}
               key={dat._id}
               onDragStart={e => this.onDragStart(e, dat.message)}
               className="imageContainer"
             >
+              <a
+                style={{
+                  position: "absolute",
+                  opacity: "95",
+                  zIndex: 1,
+                  top: "0",
+                  right: "0"
+                }}
+                onClick={e => this.onClick(dat)}
+              >
+                <Delete />
+              </a>
               <img
                 className="galleryImage"
                 src={"data:image/jpg;base64," + dat.message}
               />
-              <a onClick={e => this.onClick(dat)}>
-                <Delete />
-              </a>
             </div>
           ))
         )}
