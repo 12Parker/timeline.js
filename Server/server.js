@@ -13,10 +13,7 @@ require("custom-env").env();
 // this is our MongoDB database
 const dbRoute = process.env.REACT_APP_MONGO_ROUTE;
 // connects our back end code with the database
-mongoose.connect(
-  dbRoute,
-  { useNewUrlParser: true }
-);
+mongoose.connect(dbRoute, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 
@@ -27,7 +24,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // (optional) only made for logging and
 // bodyParser, parses the request body to be a readable json format
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(cors());
@@ -35,86 +32,14 @@ app.use(fileUpload());
 
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
-  // console.log("GetData");
+  console.log("GetData");
   Data.find((err, data) => {
-    if (err) return null; //res.json({ success: false, error: err });
-    return null; //res.json({ success: true, data: data });
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
   });
 });
 
-// this method overwrites existing data in our database
-router.post("/updateData", (req, res) => {
-  const { id, comment } = req.body;
-  const query = {
-    title: id
-  };
-  const update = {
-    comment: comment
-  };
-  console.log("Update: ", query, " : ", update);
-  Moment.findOneAndUpdate(
-    query,
-    update,
-    { upsert: true, new: true, runValidators: true }, // options
-    function(err, doc) {
-      // callback
-      if (err) {
-        // handle error
-      } else {
-        console.log("Doc: ", doc);
-        // handle document
-      }
-    },
-    err => {
-      if (err) return res.json({ success: false, error: err });
-      console.log("success");
-      return res.json({ success: true });
-    }
-  );
-});
-
-router.post("/updateImage", (req, res) => {
-  const { id, data } = req.body;
-  const query = {
-    title: id
-  };
-
-  const update = {
-    image: data
-  };
-  console.log("Update Image: ", query, " : ", update);
-  Moment.findOneAndUpdate(
-    query,
-    update,
-    { upsert: true, new: true, runValidators: true }, // options
-    function(err, doc) {
-      // callback
-      if (err) {
-        // handle error
-      } else {
-        console.log("Doc: ", doc);
-        // handle document
-      }
-    },
-    err => {
-      if (err) return res.json({ success: false, error: err });
-      console.log("success");
-      return res.json({ success: true });
-    }
-  );
-});
-
-// this is our delete method
-// this method removes existing data in our database
-router.delete("/deleteData", (req, res) => {
-  const { id } = req.body;
-  Data.findOneAndDelete(id, err => {
-    if (err) return res.send(err);
-    return res.json({ success: true });
-  });
-});
-
-router.post("/upload", (req, res) => {
+router.post("/uploadImage", (req, res) => {
   let error = null;
   let data = new Data();
   let arrayData = [];
@@ -157,6 +82,77 @@ router.post("/upload", (req, res) => {
   });
 });
 
+// this method overwrites existing data in our database
+router.post("/updateData", (req, res) => {
+  const { id, comment } = req.body;
+  const query = {
+    title: id
+  };
+  const update = {
+    comment: comment
+  };
+  console.log("Update: ", query, " : ", update);
+  Moment.findOneAndUpdate(
+    query,
+    update,
+    { upsert: true, new: true, runValidators: true }, // options
+    function(err, doc) {
+      // callback
+      if (err) {
+        // handle error
+      } else {
+        console.log("Doc: ", doc);
+        // handle document
+      }
+    },
+    err => {
+      if (err) return res.json({ success: false, error: err });
+      console.log("success");
+      return res.json({ success: true });
+    }
+  );
+});
+
+// this method removes existing data in our database
+router.delete("/deleteData", (req, res) => {
+  const { name } = req.body;
+  Data.findOneAndDelete({ name: name }, err => {
+    if (err) return res.send(err);
+    return res.json({ success: true });
+  });
+});
+
+router.post("/updateImage", (req, res) => {
+  const { id, data } = req.body;
+  const query = {
+    title: id
+  };
+
+  const update = {
+    image: data
+  };
+  console.log("Update Image: ", query, " : ", update);
+  Moment.findOneAndUpdate(
+    query,
+    update,
+    { upsert: true, new: true, runValidators: true }, // options
+    function(err, doc) {
+      // callback
+      if (err) {
+        // handle error
+      } else {
+        console.log("Doc: ", doc);
+        // handle document
+      }
+    },
+    err => {
+      if (err) return res.json({ success: false, error: err });
+      console.log("success");
+      return res.json({ success: true });
+    }
+  );
+});
+
 router.post("/uploadMoment", (req, res) => {
   let momentsToUpload = new Moment();
   let momentReq = req.body;
@@ -197,6 +193,14 @@ router.post("/updateMoment", (req, res) => {
   console.log("MomentReq: ", momentsToUpload);
   momentsToUpload.save(err => {
     if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true });
+  });
+});
+
+router.delete("/deleteMoment", (req, res) => {
+  const { title } = req.body;
+  Moment.findOneAndDelete({ title: title }, err => {
+    if (err) return res.send(err);
     return res.json({ success: true });
   });
 });

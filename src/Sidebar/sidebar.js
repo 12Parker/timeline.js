@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { Delete } from "@material-ui/icons";
 import "./sidebar.css";
 
 export default class Sidebar extends React.Component {
@@ -11,12 +12,8 @@ export default class Sidebar extends React.Component {
   // when component mounts, first thing it does is fetch all existing data in our db
   // then we incorporate a polling logic so that we can easily see if our db has
   // changed and implement those changes into our UI
-  componentDidMount() {
-    this.getDataFromDb();
-    if (!this.state.intervalIsSet) {
-      let interval = setInterval(this.getDataFromDb, 1000);
-      this.setState({ intervalIsSet: interval });
-    }
+  async componentDidMount() {
+    await this.getDataFromDb();
   }
 
   // never let a process live forever
@@ -43,7 +40,7 @@ export default class Sidebar extends React.Component {
     });
   };
 
-  handleUpload = () => {
+  handleUpload = async () => {
     const data = new FormData();
     this.state.selectedFile.forEach((element, index) => {
       data.append(
@@ -53,8 +50,8 @@ export default class Sidebar extends React.Component {
       );
     });
 
-    axios
-      .post("api/upload", data, {
+    await axios
+      .post("api/uploadImage", data, {
         onUploadProgress: ProgressEvent => {
           this.setState({
             loaded: (ProgressEvent.loaded / ProgressEvent.total) * 100
@@ -64,10 +61,34 @@ export default class Sidebar extends React.Component {
       .then(res => {
         console.log(res.statusText);
       });
+
+    await this.getDataFromDb();
   };
 
   onDragStart = (ev, id) => {
     ev.dataTransfer.setData("id", id);
+  };
+
+  onClick = async data => {
+    const name = data.name;
+    console.log("Data: ", data);
+    await axios
+      .delete(
+        "api/deleteData",
+        { data: { name: name } },
+        {
+          onUploadProgress: ProgressEvent => {
+            this.setState({
+              loaded: (ProgressEvent.loaded / ProgressEvent.total) * 100
+            });
+          }
+        }
+      )
+      .then(res => {
+        console.log(res.statusText);
+      });
+
+    await this.getDataFromDb();
   };
 
   render() {
@@ -79,19 +100,22 @@ export default class Sidebar extends React.Component {
           : pictures.map(dat => (
               <div
                 draggable
+                key={dat._id}
                 onDragStart={e => this.onDragStart(e, dat.message)}
                 className="imageContainer"
               >
                 <img
-                  onClick={this.onClick}
                   className="galleryImage"
                   src={"data:image/jpg;base64," + dat.message}
                 />
+                <a onClick={e => this.onClick(dat)}>
+                  <Delete />
+                </a>
               </div>
             ))}
         <div className="flex">
           <div className="upload-btn-wrapper">
-            <button className="btn">Upload a file</button>
+            <button className="btn">Select Files</button>
             <input
               className="button-secondary"
               type="file"

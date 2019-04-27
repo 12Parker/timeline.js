@@ -43,8 +43,26 @@ export class Moment extends React.Component {
   };
 
   onClickClose() {
+    console.log("Props: ", this.props);
+    let title = this.props.title;
     let index = parseInt(this.props.index);
     this.props.removeItem(index);
+
+    axios
+      .delete(
+        "api/deleteMoment",
+        { data: { title: title } },
+        {
+          onUploadProgress: ProgressEvent => {
+            this.setState({
+              loaded: (ProgressEvent.loaded / ProgressEvent.total) * 100
+            });
+          }
+        }
+      )
+      .then(res => {
+        console.log(res.statusText);
+      });
   }
 
   momentData = data => {
