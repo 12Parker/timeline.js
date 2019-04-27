@@ -7,7 +7,7 @@ export class Moment extends React.Component {
   constructor(props) {
     super(props);
     this.onClickClose = this.onClickClose.bind(this);
-    this.state = { show: true, counter: this.props.counter };
+    this.state = { show: true, counter: this.props.counter, colour: null };
   }
 
   componentDidMount() {
@@ -26,15 +26,19 @@ export class Moment extends React.Component {
   };
 
   getRandomColor() {
-    return (
+    let colour =
       "rgb(" +
       Math.floor(Math.random() * 256) +
       "," +
       Math.floor(Math.random() * 256) +
       "," +
       Math.floor(Math.random() * 256) +
-      ")"
-    );
+      ")";
+
+    this.setState({
+      colour: colour
+    });
+    return colour;
   }
 
   hideModal = () => {
@@ -80,6 +84,9 @@ export class Moment extends React.Component {
 
   render() {
     const { provided, innerRef, index } = this.props;
+    let momentColour = this.state.colour
+      ? this.state.colour
+      : this.getRandomColor();
     if (this.state.show) {
       return (
         <div
@@ -107,7 +114,7 @@ export class Moment extends React.Component {
           ref={innerRef}
         >
           <a
-            style={{ backgroundColor: this.getRandomColor() }}
+            style={{ backgroundColor: momentColour }}
             className="moment btn-floating btn-small"
             onClick={this.showModal}
           >
