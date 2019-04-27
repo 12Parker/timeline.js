@@ -120,7 +120,10 @@ export class Moment extends React.Component {
           >
             <i className="material-icons" />
           </a>
-          <a onClick={this.onClickClose}>
+          <a
+            style={{ position: "absolute", marginTop: "10px" }}
+            onClick={this.onClickClose}
+          >
             <Delete />
           </a>
         </div>

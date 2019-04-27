@@ -102,24 +102,26 @@ export default class Sidebar extends React.Component {
 
     return (
       <div className="col s12 m4 l3 sidebar">
-        {pictures.length <= 0
-          ? "No Photos Uploaded Yet"
-          : pictures.map(dat => (
-              <div
-                draggable
-                key={dat._id}
-                onDragStart={e => this.onDragStart(e, dat.message)}
-                className="imageContainer"
-              >
-                <img
-                  className="galleryImage"
-                  src={"data:image/jpg;base64," + dat.message}
-                />
-                <a onClick={e => this.onClick(dat)}>
-                  <Delete />
-                </a>
-              </div>
-            ))}
+        {pictures.length <= 0 ? (
+          <div style={{ margin: "10px" }}>No Photos Uploaded Yet</div>
+        ) : (
+          pictures.map(dat => (
+            <div
+              draggable
+              key={dat._id}
+              onDragStart={e => this.onDragStart(e, dat.message)}
+              className="imageContainer"
+            >
+              <img
+                className="galleryImage"
+                src={"data:image/jpg;base64," + dat.message}
+              />
+              <a onClick={e => this.onClick(dat)}>
+                <Delete />
+              </a>
+            </div>
+          ))
+        )}
         <div className="flex">
           <div className="upload-btn-wrapper">
             <button className="btn">{selectText}</button>
