@@ -5,6 +5,13 @@ const logger = require("morgan");
 const Data = require("./data");
 const Moment = require("./moments");
 const cors = require("cors");
+const passport = require("passport");
+const flash = require("connect-flash");
+
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
 const fileUpload = require("express-fileupload");
 const API_PORT = 3001;
 const app = express();
@@ -22,13 +29,26 @@ db.once("open", () => console.log("connected to the database"));
 // checks if connection with the database is successful
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+require("../config/passport")(passport); // pass passport for configuration
+
 // (optional) only made for logging and
 // bodyParser, parses the request body to be a readable json format
+app.use(morgan("dev")); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(cors());
 app.use(fileUpload());
+
+app.set("views", "../src/Views/");
+app.set("view engine", "ejs"); // set up ejs for templating
+
+// required for passport
+app.use(session({ secret: "ilovescotchscotchyscotchscotch" })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
@@ -207,6 +227,9 @@ router.delete("/deleteMoment", (req, res) => {
 
 // append /api for our http requests
 app.use("/api", router);
+
+// routes ======================================================================
+require("./routes.js")(app, passport); // load our routes and pass in our app and fully configured passport
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
