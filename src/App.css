@@ -1,17 +1,24 @@
+body {
+  min-height: 100vh;
+}
+html {
+  height: 100vh;
+}
+#root {
+  min-height: 100vh;
+}
 .App {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  background-color: #181824;
+  min-height: 100vh;
+  margin-bottom: 0px;
+  color: white;
 }
 
-.memoriesContainer {
-  display: flex;
-  flex-direction: column;
-}
-
-.inputContainer {
-  display: flex;
-  flex-direction: column;
+.row {
+  margin-bottom: 0px !important;
 }
 
 .App-logo {
@@ -35,6 +42,10 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

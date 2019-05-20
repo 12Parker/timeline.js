@@ -1,0 +1,16 @@
+.addForm {
+  display: flex;
+  width: 50%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.addButton {
+  color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.addButton {
+  background: rgb(66, 184, 221); /* this is a light blue */
+}
