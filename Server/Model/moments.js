@@ -1,3 +1,5 @@
+//TODO: Move to Model folder
+
 // /backend/data.js
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;

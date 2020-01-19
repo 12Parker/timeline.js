@@ -1,68 +1,55 @@
-import React from "react";
-import axios from "axios";
-import passport from "passport";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useMutation } from "@apollo/react-hooks";
 import { Redirect } from "react-router";
-export default class Signup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { email: "", password: "" };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+import { gql } from "apollo-boost";
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
-
-  // process the signup form
-  handleSubmit(event) {
-    console.log("Event: ", this.state);
-    axios
-      .post("/signup", {
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(response => {
-        this.setState({
-          //redirect to login page
-          redirect: "true"
-        });
-      })
-      .catch(err => {
-        console.log("Err: ", err);
-      });
-  }
-
-  render() {
-    const { redirect } = this.state;
-    if (redirect) {
-      return <Redirect to="/login" />;
+const SIGNUP = gql`
+  mutation Signup($password: String!, $email: String!) {
+    addUser(password: $password, email: $email) {
+      password
     }
-    return (
-      <form>
-        <label>
-          Email:
-          <input
-            type="text"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-        </label>
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-        </label>
-        <input type="button" onClick={this.handleSubmit} value="Submit" />
-      </form>
-    );
   }
+`;
+
+export default function Signup() {
+  const [isLoggedIn] = useState(false);
+  const [redirect, redirectPage] = useState(false);
+  const [email, updateEmail] = useState("");
+  const [password, updatePassword] = useState("");
+  const [signup, { data }] = useMutation(SIGNUP);
+
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
+  return (
+    <form>
+      <label>
+        Email:
+        <input
+          type="text"
+          name="email"
+          value={email}
+          onChange={e => updateEmail(e.target.value)}
+        />
+      </label>
+      <label>
+        Password:
+        <input
+          type="password"
+          name="password"
+          value={password}
+          onChange={e => updatePassword(e.target.value)}
+        />
+      </label>
+      <input
+        type="button"
+        onClick={() =>
+          signup({
+            variables: { password: password, email: email }
+          })
+        }
+        value="Submit"
+      />
+    </form>
+  );
 }
