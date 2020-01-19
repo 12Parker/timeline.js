@@ -12,7 +12,7 @@
 
 ## Example Site
 
-![Screenshot](./images/MainPage.png "Screenshot of site")
+![Screenshot](./images/MainPageScreenshot.png "Screenshot of site")
 
 ## Demonstration
 
