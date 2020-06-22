@@ -1,9 +1,19 @@
 import React from "react";
 import "./imageModal.css";
 import MomentComment from "../MomentComment/momentComment";
-import axios from "axios";
+import { graphql } from "react-apollo";
+import { gql } from "apollo-boost";
+console.log("GQL", graphql);
+//Mutation
+const UPDATE_IMAGE = gql`
+  mutation UpdateImage($id: ID!, $data: String!) {
+    updateImage(id: $id, data: $data) {
+      Data
+    }
+  }
+`;
 
-export class Modal extends React.Component {
+class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
@@ -33,7 +43,7 @@ export class Modal extends React.Component {
     }
   }
 
-  onDragOver = ev => {
+  onDragOver = (ev) => {
     ev.preventDefault();
   };
 
@@ -41,11 +51,11 @@ export class Modal extends React.Component {
     let id = ev.dataTransfer.getData("id");
     const items = {
       id: this.props.title,
-      data: this.state[`momentImage${this.props.title}`]
+      data: this.state[`momentImage${this.props.title}`],
     };
 
     this.setState({
-      [`momentImage${this.props.title}`]: "data:image/jpg;base64," + id
+      [`momentImage${this.props.title}`]: "data:image/jpg;base64," + id,
     });
 
     localStorage.setItem(
@@ -53,9 +63,17 @@ export class Modal extends React.Component {
       JSON.stringify("data:image/jpg;base64," + id)
     );
 
-    axios.post("api/updateImage", items).then(res => {
-      console.log(res.statusText);
+    this.props.mutate({
+      variables: {
+        id: items.id,
+        data: items.data,
+      },
     });
+
+    // axios.post("api/updateImage", items).then((res) => {
+    //   console.log(res.statusText);
+    // });
+    //Use items to populate the mutation: items.id / items.data
   };
 
   render() {
@@ -75,7 +93,7 @@ export class Modal extends React.Component {
                   zIndex: 1,
                   top: "0",
                   right: "0",
-                  color: "white"
+                  color: "white",
                 }}
                 className="cancelBtn right"
                 onClick={this.props.handleClose}
@@ -84,8 +102,8 @@ export class Modal extends React.Component {
               </button>
               <img
                 ref={this.myRef}
-                onDragOver={e => this.onDragOver(e)}
-                onDrop={e => {
+                onDragOver={(e) => this.onDragOver(e)}
+                onDrop={(e) => {
                   this.onDrop(e);
                 }}
                 style={{ width: "100%", height: "200px" }}
@@ -109,3 +127,5 @@ export class Modal extends React.Component {
     );
   }
 }
+
+export default graphql(UPDATE_IMAGE)(Modal);

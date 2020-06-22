@@ -2,6 +2,7 @@ export default `
 input File {
   name: String
   title: String
+  data: String
 }
   type User {
     password: String

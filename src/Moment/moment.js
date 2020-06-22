@@ -1,9 +1,21 @@
 import React from "react";
-import { Modal } from "../ImageModal/imageModal";
+import Modal from "../ImageModal";
 import "./moment.css";
 import axios from "axios";
 import { Delete } from "@material-ui/icons";
-export class Moment extends React.Component {
+import { graphql } from "react-apollo";
+import { gql } from "apollo-boost";
+
+//Mutation
+const UPLOAD_MOMENT = gql`
+  mutation UploadMoment($counter: Int!, $title: String!) {
+    uploadMoment(counter: $counter, title: $title) {
+      Data
+    }
+  }
+`;
+
+class Moment extends React.Component {
   constructor(props) {
     super(props);
     this.onClickClose = this.onClickClose.bind(this);
@@ -14,11 +26,19 @@ export class Moment extends React.Component {
     const items = {
       id: this.props.title,
       title: this.props.title,
-      counter: this.props.counter
+      counter: this.props.counter,
     };
-    axios.post("api/uploadMoment", items).then(res => {
-      console.log(res.statusText);
+
+    this.props.mutate({
+      variables: {
+        title: items.title,
+        counter: items.counter,
+      },
     });
+    // axios.post("api/uploadMoment", items).then((res) => {
+    //   console.log(res.statusText);
+    // });
+    //Use items to populate the mutation: items.title / items.counter
   }
 
   showModal = () => {
@@ -36,7 +56,7 @@ export class Moment extends React.Component {
       ")";
 
     this.setState({
-      colour: colour
+      colour: colour,
     });
     return colour;
   }
@@ -57,26 +77,26 @@ export class Moment extends React.Component {
         "api/deleteMoment",
         { data: { title: title } },
         {
-          onUploadProgress: ProgressEvent => {
+          onUploadProgress: (ProgressEvent) => {
             this.setState({
-              loaded: (ProgressEvent.loaded / ProgressEvent.total) * 100
+              loaded: (ProgressEvent.loaded / ProgressEvent.total) * 100,
             });
-          }
+          },
         }
       )
-      .then(res => {
+      .then((res) => {
         console.log(res.statusText);
       });
   }
 
-  momentData = data => {
+  momentData = (data) => {
     if (data) {
       this.setState({ comment: data });
       const updateMoment = {
         id: this.props.title,
-        comment: data
+        comment: data,
       };
-      axios.post("api/updateData", updateMoment).then(res => {
+      axios.post("api/updateData", updateMoment).then((res) => {
         console.log(res.statusText);
       });
     }
@@ -131,3 +151,4 @@ export class Moment extends React.Component {
     }
   }
 }
+export default graphql(UPLOAD_MOMENT)(Moment);

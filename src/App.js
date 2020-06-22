@@ -32,18 +32,13 @@ const GET_USER = gql`
 //       });
 //   }
 // };
-function App() {
-  const [isLoggedIn, login] = useState(false);
+function App(client) {
+  const [isLoggedIn, login] = useState(true);
   const { loading, error, data } = useQuery(GET_USER);
   if (loading) return <p>Loading...</p>;
   return (
     <Router>
-      <PrivateRoute
-        exact
-        path="/"
-        component={MainPage}
-        isLoggedIn={isLoggedIn}
-      />
+      <Route exact path="/" component={MainPage} isLoggedIn={isLoggedIn} />
       <Route path="/signup" component={Signup} />
       <Route path="/login" component={Login} />
     </Router>

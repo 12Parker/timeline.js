@@ -11,7 +11,7 @@ const session = require("express-session");
 const fileUpload = require("express-fileupload");
 const API_PORT = 3001;
 const app = express();
-
+app.use(bodyParser.json({ limit: "5mb" }));
 import { ApolloServer } from "apollo-server-express";
 import schema from "./graphql/";
 
@@ -55,7 +55,7 @@ const server = new ApolloServer({
   typeDefs: null,
   resolvers: null,
   schema,
-  context: ({ req, res }) => ({ req, res })
+  context: ({ req, res }) => ({ req, res }),
 });
 
 server.applyMiddleware({ app, path: "/graphql" });

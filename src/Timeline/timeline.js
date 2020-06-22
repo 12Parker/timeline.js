@@ -1,5 +1,5 @@
 import React from "react";
-import { Moment } from "../Moment/moment.js";
+import Moment from "../Moment/";
 import Add from "../AddButton/add.js";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -36,7 +36,7 @@ export default class Timeline extends React.Component {
     );
 
     this.setState({
-      items: item
+      items: item,
     });
   }
 
@@ -44,9 +44,9 @@ export default class Timeline extends React.Component {
     items.push({
       id: title,
       title: title,
-      counter: this.state.counter + 1
+      counter: this.state.counter + 1,
     });
-    this.setState(state => {
+    this.setState((state) => {
       return { items, counter: state.counter + 1 };
     });
   }
@@ -61,11 +61,11 @@ export default class Timeline extends React.Component {
       <div className="col s12 m8 l9 timeline">
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
-            {provided => (
+            {(provided) => (
               <List provided={provided} innerRef={provided.innerRef}>
                 {this.state.items.map((item, index) => (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {provided => (
+                    {(provided) => (
                       <Moment
                         key={item.title}
                         title={item.title}
