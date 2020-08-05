@@ -15,7 +15,7 @@
     "custom-env": "^1.0.0",
     "ejs": "~2.5.2",
     "express": "^4.16.4",
-    "express-fileupload": "^1.0.0",
+    "express-fileupload": "^1.1.9",
     "express-session": "~1.14.1",
     "materialize-css": "^1.0.0-rc.2",
     "method-override": "~2.3.6",
