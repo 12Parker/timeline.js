@@ -10,7 +10,7 @@
     "concurrently": "^4.1.0",
     "express": "^4.16.4",
     "materialize-css": "^1.0.0-rc.2",
-    "mongoose": "^5.3.15",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "react": "^16.5.1",
     "react-beautiful-dnd": "^10.0.2",
